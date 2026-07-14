@@ -104,7 +104,7 @@ export function Sidebar() {
         </div>
         {!isCollapsed && (
           <div className="min-w-0">
-            <p className="text-sm font-bold leading-tight text-gray-900 truncate tracking-tight">TuberCool OS</p>
+            <p className="text-sm font-bold leading-tight text-gray-900 truncate tracking-tight">TuberCool</p>
             <p className="text-[10px] font-medium text-gray-500">Research Platform</p>
           </div>
         )}

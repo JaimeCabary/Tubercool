@@ -70,9 +70,9 @@ export default function DashboardPage() {
             className="relative z-10 h-full w-full object-contain drop-shadow-lg"
           />
         </div>
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">What can TuberCool assist with today?</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900">Clinical Dashboard Overview</h2>
         <p className="mt-2 text-sm font-medium text-gray-500 max-w-[400px]">
-          TuberCool handles patient records, AI-powered diagnostic predictions, and real-time epidemiological analytics.
+          Manage patient records, review AI diagnostic predictions, and analyze real-time epidemiological data.
         </p>
       </div>
       {/* Live status indicator */}
