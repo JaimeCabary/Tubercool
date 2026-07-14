@@ -12,9 +12,15 @@ const sans = Plus_Jakarta_Sans({
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "TuberCool",
-  description: "TB Diagnosis Prediction & Surveillance Platform — Southeastern Nigeria",
+  title: "TuberCool | AI-Assisted TB Diagnosis",
+  description: "Advanced AI-powered Tuberculosis diagnosis, prediction, and epidemiological surveillance platform for Southeastern Nigeria teaching hospitals.",
+  keywords: ["Tuberculosis", "TB Diagnosis", "AI Healthcare", "Nigeria", "Epidemiology", "Surveillance", "Medical AI", "TuberCool", "Health Tech"],
+  authors: [{ name: "Jaime Cabary" }, { name: "TuberCool Team" }],
   manifest: "/manifest.json",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -23,10 +29,25 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  openGraph: {
+    title: "TuberCool | AI-Assisted TB Diagnosis",
+    description: "Advanced AI-powered Tuberculosis diagnosis and epidemiological surveillance platform.",
+    url: "https://tubercool.vercel.app",
+    siteName: "TuberCool",
+    images: [{ url: "/icon.png", width: 512, height: 512 }],
+    locale: "en_NG",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "TuberCool | AI-Assisted TB Diagnosis",
+    description: "Advanced AI-powered Tuberculosis diagnosis and epidemiological surveillance platform.",
+    images: ["/icon.png"],
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#0f172a",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

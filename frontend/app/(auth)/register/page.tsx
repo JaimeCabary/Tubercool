@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,6 +28,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
@@ -76,12 +77,38 @@ export default function RegisterPage() {
         </div>
         <div className="space-y-1.5">
           <Label>Password</Label>
-          <Input type="password" placeholder="Min. 8 characters" {...register("password")} />
+          <div className="relative">
+            <Input 
+              type={showPassword ? "text" : "password"} 
+              placeholder="Min. 8 characters" 
+              {...register("password")} 
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
         </div>
         <div className="space-y-1.5">
           <Label>Confirm password</Label>
-          <Input type="password" placeholder="••••••••" {...register("confirm_password")} />
+          <div className="relative">
+            <Input 
+              type={showPassword ? "text" : "password"} 
+              placeholder="••••••••" 
+              {...register("confirm_password")} 
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           {errors.confirm_password && <p className="text-xs text-red-500">{errors.confirm_password.message}</p>}
         </div>
         <Button type="submit" className="w-full sm:w-auto px-8 h-12 text-base font-semibold rounded-xl shadow-md transition-transform active:scale-[0.98] mt-2" disabled={loading}>
