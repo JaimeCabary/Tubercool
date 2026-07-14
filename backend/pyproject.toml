@@ -8,6 +8,8 @@ dependencies = [
     "alembic>=1.18.5",
     "fastapi>=0.139.0",
     "passlib[bcrypt]>=1.7.4",
+    "bcrypt==3.2.2",
+    "psycopg2-binary>=2.9.9",
     "pydantic-settings>=2.14.2",
     "python-dotenv>=1.2.2",
     "python-jose[cryptography]>=3.5.0",

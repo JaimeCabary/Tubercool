@@ -61,14 +61,14 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Hero / Vector Graphic Section */}
       <div className="flex flex-col items-center justify-center pt-8 pb-10 text-center">
-        <div className="relative mb-6 flex h-32 w-32 items-center justify-center">
-          <div className="absolute inset-0 animate-ping rounded-full bg-blue-100/50 opacity-75"></div>
-          <div className="relative flex h-full w-full items-center justify-center rounded-full bg-blue-50 text-blue-600 ring-4 ring-white shadow-sm">
-            <Brain className="h-14 w-14" strokeWidth={1.5} />
-          </div>
-          <div className="absolute -bottom-2 -right-2 flex h-12 w-12 items-center justify-center rounded-full bg-white text-emerald-500 shadow-sm border border-gray-100">
-            <FlaskConical className="h-6 w-6" strokeWidth={2} />
-          </div>
+        <div className="relative mb-6 flex h-48 w-48 items-center justify-center">
+          {/* Decorative background glow behind the image */}
+          <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-3xl"></div>
+          <img 
+            src="/doctor-girl.png" 
+            alt="Doctor Assistant" 
+            className="relative z-10 h-full w-full object-contain drop-shadow-lg"
+          />
         </div>
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">What can TuberCool assist with today?</h2>
         <p className="mt-2 text-sm font-medium text-gray-500 max-w-[400px]">
@@ -102,12 +102,12 @@ export default function DashboardPage() {
           ))
         ) : (
           <>
-            <StatCard label="Total Patients"    value={overview?.total_patients   ?? 0}    icon={Users}        color="blue"  />
-            <StatCard label="Tests Conducted"   value={overview?.total_tests      ?? 0}    icon={FlaskConical} color="blue"  />
-            <StatCard label="TB Positive"       value={overview?.positive_cases   ?? 0}    icon={AlertCircle}  color="red"   />
-            <StatCard label="Positivity Rate"   value={`${overview?.positivity_rate ?? 0}%`} icon={TrendingUp} color="amber" />
-            <StatCard label="AI Predictions"    value={overview?.total_predictions ?? 0}   icon={Brain}        color="blue"  />
-            <StatCard label="Hospitals"         value={overview?.active_hospitals  ?? 0}   icon={Building2}    color="green" />
+            <StatCard label="Total Patients"    value={overview?.total_patients   ?? 0}    imageSrc="/stethoscope.png" color="blue"  />
+            <StatCard label="Tests Conducted"   value={overview?.total_tests      ?? 0}    imageSrc="/syringe.png"     color="blue"  />
+            <StatCard label="TB Positive"       value={overview?.positive_cases   ?? 0}    imageSrc="/lungs.png"       color="red"   />
+            <StatCard label="Positivity Rate"   value={`${overview?.positivity_rate ?? 0}%`} imageSrc="/heart.png"       color="amber" />
+            <StatCard label="AI Predictions"    value={overview?.total_predictions ?? 0}   imageSrc="/brain.png"       color="blue"  />
+            <StatCard label="Hospitals"         value={overview?.active_hospitals  ?? 0}   imageSrc="/doc.png"         color="green" />
           </>
         )}
       </div>
