@@ -72,7 +72,7 @@ export default function ProfileSettingsPage() {
           <F label="Phone">
             <Input {...register("phone")} />
           </F>
-          <Button type="submit" size="sm" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save Changes
           </Button>

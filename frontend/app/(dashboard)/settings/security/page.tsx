@@ -64,7 +64,7 @@ export default function SecuritySettingsPage() {
           <F label="Confirm New Password" error={errors.confirm_password?.message}>
             <Input type="password" {...register("confirm_password")} />
           </F>
-          <Button type="submit" size="sm" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Update Password
           </Button>
