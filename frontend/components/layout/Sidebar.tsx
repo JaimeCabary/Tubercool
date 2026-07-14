@@ -99,7 +99,7 @@ export function Sidebar() {
 
       {/* Logo */}
       <div className={cn("flex h-14 shrink-0 items-center border-b border-gray-100 transition-all", isCollapsed ? "justify-center px-0" : "gap-3 px-5")}>
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-900 text-white shadow-sm shadow-blue-900/20">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-950 text-white shadow-sm shadow-blue-950/20">
           <Dna className="h-[18px] w-[18px]" strokeWidth={2.5} />
         </div>
         {!isCollapsed && (

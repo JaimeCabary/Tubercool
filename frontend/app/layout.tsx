@@ -44,10 +44,11 @@ export const metadata: Metadata = {
     description: "Advanced AI-powered Tuberculosis diagnosis and epidemiological surveillance platform.",
     images: ["/icon.png"],
   },
+  metadataBase: new URL("https://tubercool.vercel.app"),
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f172a",
+  themeColor: "#172554",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

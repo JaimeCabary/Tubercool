@@ -59,7 +59,7 @@ export function TopBar() {
           <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
         </button>
       ) : (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-900 shadow-sm shadow-blue-900/30 md:hidden">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-950 shadow-sm shadow-blue-950/30 md:hidden">
           <Dna className="h-[22px] w-[22px] text-white" strokeWidth={2.5} />
         </div>
       )}
