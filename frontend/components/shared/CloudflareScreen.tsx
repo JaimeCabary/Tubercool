@@ -1,80 +1,176 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * Real Cloudflare Turnstile verification screen.
+ *
+ * Setup (one-time, free):
+ *  1. Go to dash.cloudflare.com → Turnstile → Add site
+ *  2. Domain: your domain (or localhost for dev)
+ *  3. Widget type: Managed
+ *  4. Copy the Site Key → set NEXT_PUBLIC_TURNSTILE_SITE_KEY in .env.local
+ *
+ * Dev / no-key fallback: uses Cloudflare's always-pass test key automatically.
+ */
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: HTMLElement, options: Record<string, unknown>) => string;
+      remove: (widgetId: string) => void;
+    };
+  }
+}
+
+// Cloudflare's official always-pass test sitekey for development
+const DEV_SITEKEY = "1x00000000000000000000AA";
+const SITEKEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? DEV_SITEKEY;
 
 export function CloudflareScreen() {
   const [show, setShow] = useState(false);
-  const [domain, setDomain] = useState("tubercool.vercel.app");
+  const [domain, setDomain] = useState("");
+  const [rayId, setRayId] = useState("");
+  const [verified, setVerified] = useState(false);
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Only show once per session
-    const hasShown = sessionStorage.getItem("cf_verified");
-    if (!hasShown) {
-      setShow(true);
-      setDomain(window.location.hostname);
-      
-      // Hide after 3.5 seconds
-      const timer = setTimeout(() => {
-        sessionStorage.setItem("cf_verified", "true");
-        setShow(false);
-      }, 3500);
-      return () => clearTimeout(timer);
-    }
+    const hasVerified = sessionStorage.getItem("cf_verified");
+    if (hasVerified) return;
+
+    setShow(true);
+    setDomain(window.location.hostname);
+    // Generate Ray ID client-side only (avoids hydration mismatch)
+    setRayId(
+      Array.from(crypto.getRandomValues(new Uint8Array(8)))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
+    );
   }, []);
+
+  // Load Turnstile script and render widget once the screen is visible
+  useEffect(() => {
+    if (!show || !widgetRef.current) return;
+
+    const scriptId = "cf-turnstile-script";
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.src =
+        "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => renderWidget();
+      document.head.appendChild(script);
+    } else if (window.turnstile) {
+      renderWidget();
+    }
+
+    function renderWidget() {
+      if (!widgetRef.current || !window.turnstile) return;
+      widgetIdRef.current = window.turnstile.render(widgetRef.current, {
+        sitekey: SITEKEY,
+        theme: "dark",
+        callback: () => {
+          // Real Turnstile verified — user is human
+          setVerified(true);
+          sessionStorage.setItem("cf_verified", "true");
+          setTimeout(() => setShow(false), 800);
+        },
+        "error-callback": () => {
+          // On error, let them through after a short delay rather than blocking
+          setTimeout(() => {
+            sessionStorage.setItem("cf_verified", "true");
+            setShow(false);
+          }, 2000);
+        },
+      });
+    }
+
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current);
+      }
+    };
+  }, [show]);
 
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black text-[#d9d9d9] font-sans">
-      <div className="w-full max-w-[600px] px-6 py-8 md:px-0 flex flex-col h-full md:h-auto md:justify-center">
-        
-        {/* Logo and Domain */}
-        <div className="mb-4 flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center">
-            {/* Simple purple polygon mimicking Cloudflare's generic icon or custom logo */}
-            <svg viewBox="0 0 24 24" fill="none" className="h-8 w-8 text-[#8833ff]">
-              <path d="M12 2L22 7.5V16.5L12 22L2 16.5V7.5L12 2Z" fill="currentColor" />
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] text-[#d9d9d9] font-sans">
+      <div className="flex w-full max-w-[600px] flex-col px-6 py-8 md:px-0">
+
+        {/* ── TuberCool Logo + Domain ─────────────────────────────── */}
+        <div className="mb-6 flex items-center gap-3">
+          {/* TuberCool DNA logo — matches sidebar */}
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/30">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-5 w-5"
+            >
+              {/* Lucide Dna icon paths */}
+              <path d="M2 15c6.667-6 13.333 0 20-6" />
+              <path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993" />
+              <path d="M15 2c-1.798 1.997-2.518 3.995-2.807 5.993" />
+              <path d="m17 6-2.5-2.5" />
+              <path d="m14 8-1-1" />
+              <path d="m7 18 2.5 2.5" />
+              <path d="m3.5 14.5.5.5" />
+              <path d="m20 9 .5.5" />
+              <path d="m6.5 12.5 1 1" />
+              <path d="m16.5 10.5 1 1" />
+              <path d="m10 16 1.5 1.5" />
             </svg>
           </div>
-          <h1 className="text-3xl font-medium text-white tracking-tight">{domain}</h1>
+          <div>
+            <h1 className="text-2xl font-semibold text-white tracking-tight">
+              {domain || "tbdiagnosis.ng"}
+            </h1>
+            <p className="text-[12px] text-[#737373]">TB Diagnosis Platform · Southeastern Nigeria</p>
+          </div>
         </div>
 
-        {/* Verification Text */}
-        <h2 className="mb-4 text-2xl font-normal text-white">Performing security verification</h2>
-        <p className="mb-8 text-[15px] leading-relaxed text-[#a3a3a3]">
-          This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.
+        {/* ── Verification copy ───────────────────────────────────── */}
+        <h2 className="mb-3 text-xl font-normal text-white">
+          {verified ? "Verification complete" : "Performing security verification"}
+        </h2>
+        <p className="mb-8 text-[14px] leading-relaxed text-[#a3a3a3]">
+          This platform uses Cloudflare to protect patient data against
+          automated threats. Please complete the check below to continue.
         </p>
 
-        {/* Widget Box */}
-        <div className="mb-8 flex items-center justify-between border border-[#333] bg-[#1a1a1a] p-4 rounded-[4px] w-full max-w-[340px] shadow-[0_0_8px_rgba(0,0,0,0.5)]">
-          <div className="flex items-center gap-3">
-            <div className="relative h-6 w-6">
-              {/* Spinning dots */}
-              <div className="absolute inset-0 animate-spin rounded-full border-[2.5px] border-[#333] border-t-[#22c55e]"></div>
-            </div>
-            <span className="text-sm font-medium text-[#e0e0e0]">Verifying...</span>
-          </div>
-          <div className="flex flex-col items-end">
-            <div className="flex items-center gap-1">
-              <svg viewBox="0 0 64 64" className="h-5 w-auto text-[#f6821f]">
-                <path fill="currentColor" d="M60.8 39.2c-1.4-6-6.4-10.7-12.6-11.7-1.7-7-8-12.1-15.6-12.1-7.2 0-13.4 4.5-15.4 10.9-1.3-.8-2.8-1.2-4.4-1.2-4.7 0-8.6 3.8-8.6 8.6 0 1.2.3 2.4.7 3.4C2 38.6.1 41.6.1 45.1c0 4.8 3.9 8.6 8.6 8.6h46c4.6 0 8.3-3.7 8.3-8.3 0-4.1-3-7.5-6.9-8.1z"/>
+        {/* ── Actual Cloudflare Turnstile widget ─────────────────── */}
+        <div className="mb-8">
+          {verified ? (
+            <div className="flex items-center gap-3 rounded-[4px] border border-[#2a2a2a] bg-[#111] px-4 py-3 w-fit">
+              <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-[10px] font-bold text-[#e0e0e0] tracking-wide">CLOUDFLARE</span>
+              <span className="text-sm font-medium text-emerald-400">Verified — you're human ✓</span>
             </div>
-            <div className="mt-1 flex gap-2 text-[10px] text-[#737373]">
-              <a href="#" className="hover:underline">Privacy</a>
-              <a href="#" className="hover:underline">Help</a>
-            </div>
-          </div>
+          ) : (
+            <div ref={widgetRef} />
+          )}
         </div>
 
-        {/* Footer info (Ray ID) */}
-        <div className="mt-auto md:mt-24 w-full border-t border-[#333] pt-6 text-center">
-          <div className="text-[13px] text-[#a3a3a3]">
-            Ray ID: <code className="font-mono text-white">{(Math.random() * 1e16).toString(16).substring(0,16)}</code>
+        {/* ── Footer ─────────────────────────────────────────────── */}
+        <div className="mt-16 w-full border-t border-[#222] pt-5 text-center">
+          <div className="text-[12px] text-[#555]">
+            Ray ID:{" "}
+            <code className="font-mono text-[#888]">{rayId}</code>
           </div>
-          <div className="mt-2 text-[13px] text-[#a3a3a3]">
-            Performance and Security by <a href="#" className="text-white hover:underline">Cloudflare</a> | <a href="#" className="hover:underline">Privacy</a>
+          <div className="mt-2 text-[12px] text-[#555]">
+            Performance & Security by{" "}
+            <span className="text-[#888]">Cloudflare</span>
+            {" · "}
+            <span className="text-[#888]">TuberCool v1.0</span>
           </div>
         </div>
       </div>
