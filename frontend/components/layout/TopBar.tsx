@@ -38,32 +38,42 @@ export function TopBar() {
   const title = TITLES[pathname] ?? "TuberCool";
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-5 gap-4">
-      <div className="flex items-center gap-2">
-        {pathname !== "/dashboard" ? (
-          <button 
-            onClick={() => router.back()}
-            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors active:scale-95 -ml-2"
-          >
-            <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
-          </button>
-        ) : (
-          <img src="/icon.png" alt="TuberCool Logo" className="h-7 w-7 rounded-md md:hidden object-contain" />
-        )}
-        <h1 className="text-base font-bold tracking-tight text-gray-900 truncate">{title}</h1>
+    <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between bg-white/80 backdrop-blur-md px-4 gap-3">
+      {/* Left side: Logo / Back Button */}
+      {pathname !== "/dashboard" ? (
+        <button 
+          onClick={() => router.back()}
+          className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-600 transition-colors active:scale-95"
+        >
+          <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
+        </button>
+      ) : (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 shadow-sm md:hidden">
+          <img src="/icon.png" alt="TuberCool Logo" className="h-6 w-6 object-contain brightness-0 invert" />
+        </div>
+      )}
+
+      {/* Desktop Title */}
+      <h1 className="hidden md:block text-base font-bold tracking-tight text-gray-900 truncate">{title}</h1>
+
+      {/* Mobile Search Bar */}
+      <div className="relative flex-1 md:hidden">
+        <Input 
+          type="search" 
+          placeholder="Ask TuberCool anything..." 
+          className="w-full bg-white shadow-[0_2px_12px_rgb(0,0,0,0.04)] border border-gray-100 focus-visible:ring-1 focus-visible:ring-gray-200 rounded-full h-11 pl-4 pr-10 text-[15px]"
+        />
+        <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
       </div>
 
-      <div className="flex items-center gap-2 shrink-0">
-        <div className="relative hidden md:block">
+      {/* Desktop Right Side */}
+      <div className="hidden md:flex items-center gap-2 shrink-0">
+        <div className="relative">
           <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input placeholder="Search..." className="h-8 w-52 pl-9 text-xs bg-gray-50" />
         </div>
-        <Link href="/settings/profile" className="md:hidden relative flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
-          <Settings className="h-[18px] w-[18px]" />
-        </Link>
         <Link href="/notifications" className="relative flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
           <Bell className="h-[18px] w-[18px]" />
-          {/* dot */}
           <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-blue-600" />
         </Link>
       </div>

@@ -26,7 +26,7 @@ export function BottomNav() {
       <nav className="flex w-full max-w-sm items-center justify-between gap-2 pointer-events-auto">
         
         {/* Left Pill */}
-        <div className="flex h-[56px] flex-1 items-center justify-evenly rounded-[28px] bg-white/95 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 backdrop-blur-md px-2">
+        <div className="flex h-[60px] flex-1 items-center justify-evenly rounded-full bg-white/80 shadow-[0_8px_32px_rgb(0,0,0,0.1)] border border-white/40 backdrop-blur-xl px-2">
           {LEFT_TABS.map(({ href, icon: Icon }) => {
             const active = isActive(href);
             return (
@@ -48,15 +48,17 @@ export function BottomNav() {
         <Link 
           href="/predictions" 
           className={cn(
-            "flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full shadow-[0_8px_24px_rgb(15,23,42,0.25)] transition-transform active:scale-90",
-            isActive("/predictions") ? "bg-blue-600 text-white" : "bg-gray-900 text-white"
+            "flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full shadow-[0_8px_32px_rgb(37,99,235,0.4)] transition-transform active:scale-90",
+            isActive("/predictions") 
+              ? "bg-blue-700 text-white shadow-[0_8px_32px_rgb(29,78,216,0.5)]" 
+              : "bg-gradient-to-br from-blue-500 to-blue-600 text-white"
           )}
         >
-          <BrainCircuit className="h-[26px] w-[26px]" strokeWidth={2} />
+          <BrainCircuit className="h-[28px] w-[28px]" strokeWidth={2.2} />
         </Link>
 
         {/* Right Pill */}
-        <div className="flex h-[56px] flex-1 items-center justify-evenly rounded-[28px] bg-white/95 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 backdrop-blur-md px-2">
+        <div className="flex h-[60px] flex-1 items-center justify-evenly rounded-full bg-white/80 shadow-[0_8px_32px_rgb(0,0,0,0.1)] border border-white/40 backdrop-blur-xl px-2">
           {RIGHT_TABS.map(({ href, icon: Icon }) => {
             const active = isActive(href);
             return (
