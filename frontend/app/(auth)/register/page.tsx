@@ -84,7 +84,7 @@ export default function RegisterPage() {
           <Input type="password" placeholder="••••••••" {...register("confirm_password")} />
           {errors.confirm_password && <p className="text-xs text-red-500">{errors.confirm_password.message}</p>}
         </div>
-        <Button type="submit" className="w-full h-12 text-base font-semibold rounded-xl mt-2" disabled={loading}>
+        <Button type="submit" className="w-full sm:w-auto px-8 h-12 text-base font-semibold rounded-xl shadow-md transition-transform active:scale-[0.98] mt-2" disabled={loading}>
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Request access
         </Button>

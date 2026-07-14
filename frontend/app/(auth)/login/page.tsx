@@ -66,7 +66,7 @@ export default function LoginPage() {
           {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
         </div>
 
-        <Button type="submit" className="w-full h-12 text-base font-semibold rounded-xl" disabled={loading}>
+        <Button type="submit" className="w-full sm:w-auto px-8 h-12 text-base font-semibold rounded-xl shadow-md transition-transform active:scale-[0.98]" disabled={loading}>
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Sign in
         </Button>
