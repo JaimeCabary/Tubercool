@@ -35,7 +35,7 @@ export function TopBar() {
   const title = TITLES[pathname] ?? "TuberCool";
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-5 gap-4">
+    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-5 gap-4">
       <h1 className="text-sm font-semibold text-gray-900 truncate">{title}</h1>
 
       <div className="flex items-center gap-2 shrink-0">
