@@ -23,6 +23,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/store/auth";
+import { getAvatarUrl } from "@/lib/utils";
 
 const NAV = [
   {
@@ -160,9 +161,11 @@ export function Sidebar() {
           "flex items-center rounded-xl py-2 transition-colors hover:bg-gray-50",
           isCollapsed ? "flex-col justify-center gap-3 px-0" : "gap-3 px-2"
         )}>
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-100 border border-gray-200 text-sm font-bold text-gray-700">
-            {(user?.full_name?.[0] ?? user?.email?.[0] ?? "U").toUpperCase()}
-          </div>
+          <img 
+            src={getAvatarUrl(user?.full_name || user?.email || "User", "male")} 
+            alt="avatar" 
+            className="h-9 w-9 shrink-0 rounded-full bg-blue-50 border border-blue-100" 
+          />
           
           {!isCollapsed && (
             <div className="min-w-0 flex-1">

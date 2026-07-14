@@ -11,7 +11,7 @@ import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format, differenceInYears } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cn, getAvatarUrl } from "@/lib/utils";
 
 interface PatientPanelProps {
   patientId: string;
@@ -73,9 +73,11 @@ export function PatientPanel({ patientId, onRunPrediction }: PatientPanelProps) 
     <div className="space-y-5">
       {/* Identity */}
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-xl font-bold text-blue-700">
-          {patient.first_name[0]}{patient.last_name[0]}
-        </div>
+        <img 
+          src={getAvatarUrl(`${patient.first_name} ${patient.last_name}`, patient.gender || undefined)} 
+          alt="avatar" 
+          className="h-14 w-14 shrink-0 rounded-2xl bg-blue-50 border border-blue-100" 
+        />
         <div className="min-w-0">
           <p className="text-lg font-semibold text-gray-900 leading-tight">
             {patient.first_name} {patient.last_name}

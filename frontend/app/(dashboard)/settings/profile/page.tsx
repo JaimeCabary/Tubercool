@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/lib/store/auth";
+import { getAvatarUrl } from "@/lib/utils";
 
 const schema = z.object({
   full_name: z.string().min(2, "Required"),
@@ -53,9 +54,11 @@ export default function ProfileSettingsPage() {
         <h3 className="mb-4 text-sm font-semibold text-gray-900">Profile Information</h3>
 
         <div className="mb-6 flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-2xl font-semibold text-blue-700">
-            {(user?.full_name?.[0] ?? user?.email?.[0] ?? "U").toUpperCase()}
-          </div>
+          <img 
+            src={getAvatarUrl(user?.full_name || user?.email || "User", "male")} 
+            alt="avatar" 
+            className="h-16 w-16 shrink-0 rounded-full bg-blue-50 border border-blue-100" 
+          />
           <div>
             <p className="text-sm font-semibold text-gray-900">{user?.full_name}</p>
             <p className="text-xs text-gray-500 capitalize">{user?.role?.replace("_", " ")}</p>

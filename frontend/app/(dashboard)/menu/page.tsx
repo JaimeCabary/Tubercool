@@ -20,6 +20,7 @@ import {
   Settings
 } from "lucide-react";
 import { useAuthStore } from "@/lib/store/auth";
+import { getAvatarUrl } from "@/lib/utils";
 
 const MENU_SECTIONS = [
   {
@@ -66,9 +67,11 @@ export default function MenuPage() {
         href="/settings/profile"
         className="mb-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm border border-gray-100 transition-colors hover:bg-gray-50 active:scale-[0.98]"
       >
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-700">
-          {(user?.full_name?.[0] ?? user?.email?.[0] ?? "U").toUpperCase()}
-        </div>
+        <img 
+          src={getAvatarUrl(user?.full_name || user?.email || "User", "male")} 
+          alt="avatar" 
+          className="h-14 w-14 shrink-0 rounded-full bg-blue-50 border border-blue-100" 
+        />
         <div className="flex-1 min-w-0">
           <h2 className="truncate text-lg font-bold text-gray-900">{user?.full_name ?? user?.email ?? "User"}</h2>
           <p className="truncate text-sm text-gray-500 capitalize">{user?.role?.replace("_", " ")}</p>

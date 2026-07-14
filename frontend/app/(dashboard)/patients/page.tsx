@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users } from "lucide-react";
 import { format } from "date-fns";
+import { getAvatarUrl } from "@/lib/utils";
 
 type Panel =
   | { type: "patient"; id: string }
@@ -130,9 +131,11 @@ export default function PatientsPage() {
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
-                          {p.first_name[0]}{p.last_name[0]}
-                        </div>
+                        <img 
+                          src={getAvatarUrl(`${p.first_name} ${p.last_name}`, p.gender || undefined)} 
+                          alt="avatar" 
+                          className="h-8 w-8 shrink-0 rounded-full bg-blue-50 border border-blue-100" 
+                        />
                         <span className="font-medium text-gray-900">
                           {p.first_name} {p.last_name}
                         </span>
