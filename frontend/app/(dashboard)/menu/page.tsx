@@ -13,7 +13,11 @@ import {
   UserCog, 
   FileText, 
   Settings2, 
-  LogOut 
+  LogOut,
+  User,
+  Shield,
+  Bell,
+  Settings
 } from "lucide-react";
 import { useAuthStore } from "@/lib/store/auth";
 
@@ -37,9 +41,12 @@ const MENU_SECTIONS = [
     ],
   },
   {
-    title: "System",
+    title: "Settings",
     items: [
-      { href: "/settings/profile", icon: Settings2, label: "Settings", color: "text-gray-500", bg: "bg-gray-100" },
+      { href: "/settings/profile",       icon: User,     label: "Profile",       color: "text-blue-500",   bg: "bg-blue-50" },
+      { href: "/settings/security",      icon: Shield,   label: "Security",      color: "text-emerald-500",bg: "bg-emerald-50" },
+      { href: "/settings/notifications", icon: Bell,     label: "Notifications", color: "text-amber-500",  bg: "bg-amber-50" },
+      { href: "/settings/system",        icon: Settings, label: "System",        color: "text-gray-500",   bg: "bg-gray-100" },
     ],
   },
 ];
