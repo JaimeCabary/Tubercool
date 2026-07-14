@@ -1,9 +1,10 @@
+import uuid
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
 from app.core.database import get_db
-from app.models.models import Prediction, User
+from app.models.models import Prediction, TestResult, Patient, User
 from app.schemas.clinical import PredictionRequest, PredictionOut
 from app.api.v1.endpoints.auth import get_current_active_user
 from app.ml.predictor import run_prediction
@@ -17,16 +18,40 @@ def create_prediction(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
+    # Fetch the test result
+    test = db.query(TestResult).filter(TestResult.id == req.test_result_id).first()
+    if not test:
+        raise HTTPException(status_code=404, detail="Test result not found")
+
+    # Fetch the patient
+    patient = db.query(Patient).filter(Patient.id == test.patient_id).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+
     try:
-        pred = run_prediction(
-            patient_id=req.patient_id,
-            test_result_id=req.test_result_id,
-            db=db,
-            created_by_id=current_user.id,
-        )
-        return pred
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        result = run_prediction(test=test, patient=patient, db=db)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
+
+    # Persist the prediction
+    pred = Prediction(
+        id=str(uuid.uuid4()),
+        patient_id=patient.id,
+        test_result_id=test.id,
+        created_by_id=current_user.id,
+        probability_positive=result["probability_positive"],
+        probability_negative=result["probability_negative"],
+        probability_mdr=result.get("probability_mdr", 0.0),
+        confidence=result["confidence"],
+        risk_level=result["risk_level"],
+        recommendation=result["recommendation"],
+        feature_importance=result["feature_importance"],
+        model_version=result.get("model_version", "Bayesian-Ibegbulem-2026-v1"),
+    )
+    db.add(pred)
+    db.commit()
+    db.refresh(pred)
+    return pred
 
 
 @router.get("/", response_model=List[PredictionOut])
