@@ -63,7 +63,10 @@ export default function NewTestPage() {
   async function onSubmit(data: FormData) {
     setLoading(true);
     try {
-      const test = await testsApi.create(data);
+      const cleanedData = Object.fromEntries(
+        Object.entries(data).filter(([_, v]) => v !== "")
+      );
+      const test = await testsApi.create(cleanedData);
       toast.success("Test result saved");
       router.push(`/tests/${test.id}`);
     } catch {
@@ -80,12 +83,19 @@ export default function NewTestPage() {
     </div>
   );
 
-  const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs text-gray-600">{label}</Label>
-      {children}
-    </div>
-  );
+  const Field = ({ label, children }: { label: string; children: React.ReactNode }) => {
+    const isRequired = label.endsWith(" *");
+    const labelText = isRequired ? label.slice(0, -2) : label;
+    return (
+      <div className="space-y-1.5">
+        <Label className="text-xs text-gray-600">
+          {labelText}
+          {isRequired && <span className="text-red-500 ml-1">*</span>}
+        </Label>
+        {children}
+      </div>
+    );
+  };
 
   const Select = ({ name, options, placeholder }: { name: keyof FormData; options: string[]; placeholder?: string }) => (
     <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register(name as any)}>
@@ -97,9 +107,6 @@ export default function NewTestPage() {
   return (
     <div className="max-w-3xl">
       <div className="mb-6 flex items-center gap-3">
-        <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-600">
-          <ArrowLeft className="h-4 w-4" />
-        </button>
         <div>
           <h2 className="text-xl font-semibold text-gray-900">New Test Result</h2>
           <p className="text-sm text-gray-500">Enter diagnostic test results</p>

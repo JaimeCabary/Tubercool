@@ -71,8 +71,11 @@ export default function NewPatientPage() {
       }
 
       const { custom_hospital, ...payloadData } = data;
+      const cleanedData = Object.fromEntries(
+        Object.entries(payloadData).filter(([_, v]) => v !== "")
+      );
       const patient = await patientsApi.create({
-        ...payloadData,
+        ...cleanedData,
         hospital_id: finalHospitalId,
       });
 
@@ -92,13 +95,20 @@ export default function NewPatientPage() {
     </div>
   );
 
-  const Field = ({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-gray-700">{label}</Label>
-      {children}
-      {error && <p className="text-xs text-red-500">{error}</p>}
-    </div>
-  );
+  const Field = ({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) => {
+    const isRequired = label.endsWith(" *");
+    const labelText = isRequired ? label.slice(0, -2) : label;
+    return (
+      <div className="space-y-1.5">
+        <Label className="text-xs font-medium text-gray-700">
+          {labelText}
+          {isRequired && <span className="text-red-500 ml-1">*</span>}
+        </Label>
+        {children}
+        {error && <p className="text-xs text-red-500">{error}</p>}
+      </div>
+    );
+  };
 
   const Checkbox = ({ label, name }: { label: string; name: keyof FormData }) => (
     <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
@@ -110,9 +120,6 @@ export default function NewPatientPage() {
   return (
     <div className="max-w-3xl">
       <div className="mb-6 flex items-center gap-3">
-        <Link href="/patients" className="text-gray-400 hover:text-gray-600">
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
         <div>
           <h2 className="text-xl font-semibold text-gray-900">Register New Patient</h2>
           <p className="text-sm text-gray-500">Fill in the patient's details and risk factors</p>
