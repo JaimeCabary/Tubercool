@@ -22,7 +22,7 @@ export function BottomNav() {
     pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
 
   return (
-    <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 md:hidden pointer-events-none">
+    <div className="fixed bottom-3 left-0 right-0 z-50 flex justify-center px-4 md:hidden pointer-events-none pb-safe">
       <nav className="flex w-full max-w-sm items-center justify-between gap-2 pointer-events-auto">
         
         {/* Left Pill */}
@@ -48,10 +48,10 @@ export function BottomNav() {
         <Link 
           href="/predictions" 
           className={cn(
-            "flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full shadow-[0_8px_32px_rgb(37,99,235,0.4)] transition-transform active:scale-90",
+            "flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full shadow-[0_8px_32px_rgb(15,23,42,0.4)] transition-transform active:scale-90",
             isActive("/predictions") 
-              ? "bg-blue-700 text-white shadow-[0_8px_32px_rgb(29,78,216,0.5)]" 
-              : "bg-gradient-to-br from-blue-500 to-blue-600 text-white"
+              ? "bg-slate-800 text-white shadow-[0_8px_32px_rgb(15,23,42,0.5)]" 
+              : "bg-slate-900 text-white"
           )}
         >
           <BrainCircuit className="h-[28px] w-[28px]" strokeWidth={2.2} />

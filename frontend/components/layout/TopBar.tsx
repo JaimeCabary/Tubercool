@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Bell, Search, Settings, ChevronLeft } from "lucide-react";
+import { Bell, Search, Settings, ChevronLeft, Dna } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const TITLES: Record<string, string> = {
@@ -48,8 +48,8 @@ export function TopBar() {
           <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
         </button>
       ) : (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 shadow-sm md:hidden">
-          <img src="/icon.png" alt="TuberCool Logo" className="h-6 w-6 object-contain brightness-0 invert" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 shadow-sm shadow-slate-900/20 md:hidden">
+          <Dna className="h-[22px] w-[22px] text-white" strokeWidth={2.5} />
         </div>
       )}
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Dna } from "lucide-react";
 
 /**
  * Real Cloudflare Turnstile verification screen.
@@ -105,29 +106,8 @@ export function CloudflareScreen() {
         {/* ── TuberCool Logo + Domain ─────────────────────────────── */}
         <div className="mb-6 flex items-center gap-3">
           {/* TuberCool DNA logo — matches sidebar */}
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/30">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-5 w-5"
-            >
-              {/* Lucide Dna icon paths */}
-              <path d="M2 15c6.667-6 13.333 0 20-6" />
-              <path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993" />
-              <path d="M15 2c-1.798 1.997-2.518 3.995-2.807 5.993" />
-              <path d="m17 6-2.5-2.5" />
-              <path d="m14 8-1-1" />
-              <path d="m7 18 2.5 2.5" />
-              <path d="m3.5 14.5.5.5" />
-              <path d="m20 9 .5.5" />
-              <path d="m6.5 12.5 1 1" />
-              <path d="m16.5 10.5 1 1" />
-              <path d="m10 16 1.5 1.5" />
-            </svg>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0f172a] shadow-lg shadow-[#0f172a]/30">
+            <Dna className="h-[22px] w-[22px] text-white" strokeWidth={2.5} />
           </div>
           <div>
             <h1 className="text-2xl font-semibold text-white tracking-tight">
