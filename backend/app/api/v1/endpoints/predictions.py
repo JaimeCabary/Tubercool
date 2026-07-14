@@ -1,5 +1,5 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -8,8 +8,21 @@ from app.models.models import Prediction, TestResult, Patient, User
 from app.schemas.clinical import PredictionRequest, PredictionOut
 from app.api.v1.endpoints.auth import get_current_active_user
 from app.ml.predictor import run_prediction
+from app.ml.cxr_model import predict_cxr
 
 router = APIRouter()
+
+@router.post("/cxr/analyze")
+async def analyze_cxr(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_active_user),
+):
+    try:
+        contents = await file.read()
+        result = predict_cxr(contents)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"CXR Analysis failed: {str(e)}")
 
 
 @router.post("/", response_model=PredictionOut)

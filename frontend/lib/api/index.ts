@@ -52,6 +52,13 @@ export const predictionsApi = {
   get: (id: string) => api.get<Prediction>(`/predictions/${id}`).then(r => r.data),
   create: (patient_id: string, test_result_id?: string) =>
     api.post<Prediction>("/predictions", { patient_id, test_result_id }).then(r => r.data),
+  analyzeCxr: (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post("/predictions/cxr/analyze", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    }).then(r => r.data);
+  },
 };
 
 // ── Analytics ─────────────────────────────────────────────────────────────────

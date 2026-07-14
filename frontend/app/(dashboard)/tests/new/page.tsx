@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { testsApi, patientsApi } from "@/lib/api";
+import { testsApi, patientsApi, predictionsApi } from "@/lib/api";
 
 const schema = z.object({
   patient_id: z.string().min(1, "Select a patient"),
@@ -49,16 +49,35 @@ const SENS_OPTIONS = ["", "sensitive", "resistant", "indeterminate"];
 
 export default function NewTestPage() {
   const [loading, setLoading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const defaultPatientId = searchParams.get("patient_id") ?? "";
 
   const { data: patients } = useQuery({ queryKey: ["patients"], queryFn: () => patientsApi.list() });
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { patient_id: defaultPatientId, test_date: new Date().toISOString().split("T")[0] },
   });
+
+  async function handleCxrUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsAnalyzing(true);
+    try {
+      const result = await predictionsApi.analyzeCxr(file);
+      setValue("cxr_done", true);
+      setValue("cxr_result", result.label === "Tuberculosis" ? "Abnormal" : "Normal");
+      setValue("cxr_findings", `AI Analysis: ${result.label} (Confidence: ${result.confidence}, Probability TB: ${(result.probability_tb * 100).toFixed(1)}%)`);
+      toast.success("X-Ray analyzed successfully");
+    } catch (error) {
+      toast.error("Failed to analyze X-Ray");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }
 
   async function onSubmit(data: FormData) {
     setLoading(true);
@@ -170,6 +189,32 @@ export default function NewTestPage() {
               <option>Contaminated</option>
             </select>
           </Field>
+        </Section>
+
+        <Section title="Chest X-Ray (AI Analysis)">
+          <div className="col-span-full">
+            <Label className="text-xs text-gray-600 mb-2 block">Upload X-Ray Image</Label>
+            <div className="flex items-center gap-4">
+              <Input type="file" accept="image/*" onChange={handleCxrUpload} disabled={isAnalyzing} className="max-w-sm" />
+              {isAnalyzing && <Loader2 className="h-4 w-4 animate-spin text-gray-500" />}
+            </div>
+          </div>
+          <Field label="CXR Done">
+            <div className="flex items-center h-9">
+              <input type="checkbox" className="h-4 w-4 rounded border-gray-300" {...register("cxr_done")} />
+            </div>
+          </Field>
+          <Field label="CXR Result">
+            <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("cxr_result")}>
+              <option value="">N/A</option>
+              <option>Normal</option>
+              <option>Abnormal</option>
+            </select>
+          </Field>
+          <div className="col-span-full">
+            <Label className="text-xs text-gray-600 mb-2 block">CXR Findings</Label>
+            <Textarea rows={2} placeholder="Findings or AI analysis results..." {...register("cxr_findings")} />
+          </div>
         </Section>
 
         <Section title="Mantoux / TST">

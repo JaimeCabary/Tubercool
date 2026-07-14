@@ -1,0 +1,16 @@
+{
+  "model_version": "MobileNetV2-CXR-v1",
+  "img_size": 224,
+  "classes": [
+    "Normal",
+    "Tuberculosis"
+  ],
+  "threshold": 0.5,
+  "test_accuracy": 0.9190475940704346,
+  "test_auc": 0.9047619104385376,
+  "train_samples": 2941,
+  "val_samples": 629,
+  "test_samples": 630,
+  "dataset": "TB_Chest_Radiography_Database (3500 Normal / 700 TB)",
+  "paper_ref": "Ibegbulem C.R. (2026) FUTO PhD Proposal"
+}
