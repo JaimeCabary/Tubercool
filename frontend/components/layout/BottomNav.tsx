@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, FlaskConical, BrainCircuit, BarChart3 } from "lucide-react";
+import { LayoutDashboard, Users, FlaskConical, BrainCircuit, Menu } from "lucide-react";
 
 const LEFT_TABS = [
   { href: "/dashboard", icon: LayoutDashboard },
@@ -11,8 +11,8 @@ const LEFT_TABS = [
 ];
 
 const RIGHT_TABS = [
-  { href: "/tests",               icon: FlaskConical },
-  { href: "/analytics/prevalence",icon: BarChart3 },
+  { href: "/tests", icon: FlaskConical },
+  { href: "/menu",  icon: Menu },
 ];
 
 export function BottomNav() {
