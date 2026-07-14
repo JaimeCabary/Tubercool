@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Bell, Search, Menu, Settings } from "lucide-react";
+import { Bell, Search, Menu, Settings, ChevronLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
@@ -35,6 +35,7 @@ const TITLES: Record<string, string> = {
 
 export function TopBar() {
   const pathname = usePathname();
+  const router = useRouter();
   const title = TITLES[pathname] ?? "TuberCool";
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,7 +46,7 @@ export function TopBar() {
 
   return (
     <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-5 gap-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetTrigger asChild>
             <button className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
@@ -57,7 +58,15 @@ export function TopBar() {
             <Sidebar />
           </SheetContent>
         </Sheet>
-        <h1 className="text-sm font-semibold text-gray-900 truncate">{title}</h1>
+        {pathname !== "/dashboard" && (
+          <button 
+            onClick={() => router.back()}
+            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors active:scale-95"
+          >
+            <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
+          </button>
+        )}
+        <h1 className="text-base font-bold tracking-tight text-gray-900 truncate ml-1">{title}</h1>
       </div>
 
       <div className="flex items-center gap-2 shrink-0">
