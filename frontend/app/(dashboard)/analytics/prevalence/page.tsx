@@ -12,7 +12,7 @@ import {
 export default function PrevalencePage() {
   const { data, isLoading } = useQuery({
     queryKey: ["analytics", "prevalence"],
-    queryFn: analyticsApi.prevalenceByYear,
+    queryFn: () => analyticsApi.prevalenceByYear(),
   });
 
   return (
