@@ -56,7 +56,10 @@ export default function MenuPage() {
   return (
     <div className="mx-auto w-full max-w-md pb-12">
       {/* Profile Header */}
-      <div className="mb-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm border border-gray-100">
+      <Link 
+        href="/settings/profile"
+        className="mb-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm border border-gray-100 transition-colors hover:bg-gray-50 active:scale-[0.98]"
+      >
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-700">
           {(user?.full_name?.[0] ?? user?.email?.[0] ?? "U").toUpperCase()}
         </div>
@@ -64,7 +67,8 @@ export default function MenuPage() {
           <h2 className="truncate text-lg font-bold text-gray-900">{user?.full_name ?? user?.email ?? "User"}</h2>
           <p className="truncate text-sm text-gray-500 capitalize">{user?.role?.replace("_", " ")}</p>
         </div>
-      </div>
+        <ChevronRight className="h-5 w-5 text-gray-400" />
+      </Link>
 
       {/* Menu Sections */}
       <div className="space-y-6">
