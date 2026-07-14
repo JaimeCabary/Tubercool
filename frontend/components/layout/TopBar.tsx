@@ -47,26 +47,27 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-5 gap-4">
       <div className="flex items-center gap-2">
-        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <button className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
-              <Menu className="h-5 w-5" />
-            </button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-[270px] border-r-0" showCloseButton={false}>
-            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-            <Sidebar />
-          </SheetContent>
-        </Sheet>
-        {pathname !== "/dashboard" && (
+        {pathname !== "/dashboard" ? (
           <button 
             onClick={() => router.back()}
-            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors active:scale-95"
+            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors active:scale-95 -ml-2"
           >
             <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />
           </button>
+        ) : (
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors -ml-2">
+                <Menu className="h-5 w-5" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-[270px] border-r-0" showCloseButton={false}>
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <Sidebar />
+            </SheetContent>
+          </Sheet>
         )}
-        <h1 className="text-base font-bold tracking-tight text-gray-900 truncate ml-1">{title}</h1>
+        <h1 className="text-base font-bold tracking-tight text-gray-900 truncate">{title}</h1>
       </div>
 
       <div className="flex items-center gap-2 shrink-0">
