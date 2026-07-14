@@ -1,0 +1,116 @@
+"use client";
+
+import { useParams, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeft } from "lucide-react";
+import { predictionsApi } from "@/lib/api";
+import { StatusBadge } from "@/components/shared/StatusBadge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+
+export default function PredictionDetailPage() {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+
+  const { data: prediction, isLoading } = useQuery({
+    queryKey: ["prediction", id],
+    queryFn: () => predictionsApi.get(id),
+  });
+
+  if (isLoading) return <Skeleton className="h-96 rounded-xl" />;
+  if (!prediction) return <p className="text-gray-500">Prediction not found</p>;
+
+  const probPos = (prediction.probability_positive ?? 0) * 100;
+  const probNeg = (prediction.probability_negative ?? 0) * 100;
+  const features = Object.entries(prediction.feature_importance ?? {})
+    .map(([name, value]) => ({ name, value: Math.abs(value * 100) }))
+    .sort((a, b) => b.value - a.value);
+
+  const confidenceColor = {
+    high: "text-green-700 bg-green-50",
+    medium: "text-amber-700 bg-amber-50",
+    low: "text-red-700 bg-red-50",
+  }[prediction.confidence ?? "low"] ?? "text-gray-700 bg-gray-50";
+
+  return (
+    <div className="max-w-3xl space-y-4">
+      <div className="flex items-center gap-3">
+        <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-600">
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900">Prediction Result</h2>
+          <p className="text-xs text-gray-500">{format(new Date(prediction.created_at), "dd MMMM yyyy, HH:mm")}</p>
+        </div>
+      </div>
+
+      {/* Main result */}
+      <div className="rounded-xl border border-gray-200 bg-white p-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-xs text-gray-500 mb-1">Prediction</p>
+            <p className="text-3xl font-semibold capitalize text-gray-900">{prediction.prediction}</p>
+            <p className="text-sm text-gray-500 mt-1">{prediction.model_version}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <StatusBadge status={prediction.prediction ?? "pending"} />
+            <span className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${confidenceColor}`}>
+              {prediction.confidence} confidence
+            </span>
+          </div>
+        </div>
+
+        {/* Probability bars */}
+        <div className="mt-6 space-y-3">
+          <div>
+            <div className="mb-1 flex justify-between text-xs text-gray-600">
+              <span>TB Positive</span>
+              <span className="font-medium">{probPos.toFixed(1)}%</span>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+              <div className="h-full rounded-full bg-red-500 transition-all" style={{ width: `${probPos}%` }} />
+            </div>
+          </div>
+          <div>
+            <div className="mb-1 flex justify-between text-xs text-gray-600">
+              <span>TB Negative</span>
+              <span className="font-medium">{probNeg.toFixed(1)}%</span>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+              <div className="h-full rounded-full bg-green-500 transition-all" style={{ width: `${probNeg}%` }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Feature importance */}
+      {features.length > 0 && (
+        <div className="rounded-xl border border-gray-200 bg-white p-5">
+          <h3 className="mb-4 text-sm font-semibold text-gray-900">Feature Importance</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={features} layout="vertical" barSize={10}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+              <XAxis type="number" tick={{ fontSize: 10 }} unit="%" />
+              <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} width={90} />
+              <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} formatter={(v: number) => `${v.toFixed(1)}%`} />
+              <Bar dataKey="value" radius={[0, 3, 3, 0]}>
+                {features.map((_, i) => (
+                  <Cell key={i} fill={i === 0 ? "#2563EB" : "#BFDBFE"} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* Disclaimer */}
+      <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+        <p className="text-xs text-amber-800">
+          <strong>Clinical Note:</strong> This prediction is generated by a rule-based model using WHO 2022 diagnostic guidelines.
+          It is intended to support — not replace — clinical judgement. Final TB diagnosis must be confirmed by a qualified clinician.
+        </p>
+      </div>
+    </div>
+  );
+}
