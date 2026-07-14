@@ -9,7 +9,7 @@ import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, Tool
 export default function RiskFactorsPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["analytics", "risk-factors"],
-    queryFn: analyticsApi.riskFactors,
+    queryFn: () => analyticsApi.riskFactors(),
   });
 
   const chartData = data ? [

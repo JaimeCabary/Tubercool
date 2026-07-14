@@ -8,8 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TrendsPage() {
   const { data, isLoading } = useQuery({
-    queryKey: ["analytics", "prevalence"],
-    queryFn: analyticsApi.prevalenceByYear,
+    queryKey: ["analytics", "trends"],
+    queryFn: () => analyticsApi.prevalenceByYear(),
   });
 
   return (

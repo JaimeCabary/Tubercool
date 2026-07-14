@@ -8,8 +8,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 export default function HospitalsAnalyticsPage() {
   const { data, isLoading } = useQuery({
-    queryKey: ["analytics", "by-hospital"],
-    queryFn: analyticsApi.byHospital,
+    queryKey: ["analytics", "hospitals"],
+    queryFn: () => analyticsApi.byHospital(),
   });
 
   return (

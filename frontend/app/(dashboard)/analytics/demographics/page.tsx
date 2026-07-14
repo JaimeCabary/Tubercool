@@ -11,7 +11,7 @@ const COLORS = ["#2563EB", "#93C5FD", "#BFDBFE"];
 export default function DemographicsPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["analytics", "demographics"],
-    queryFn: analyticsApi.demographics,
+    queryFn: () => analyticsApi.demographics(),
   });
 
   return (
