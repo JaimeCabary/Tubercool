@@ -36,6 +36,15 @@ export default function DashboardPage() {
     staleTime: 30_000,
   });
 
+  const [showHeroLoading, setShowHeroLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHeroLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // ── Real-time SSE ─────────────────────────────────────────────────────────
   const { lastEvent, status: sseStatus } = useSSE(
     `${API_BASE}/stream/events`
@@ -57,10 +66,9 @@ export default function DashboardPage() {
 
   const sseLive = sseStatus === "connected";
 
-  return (
-    <div className="space-y-6">
-      {/* Hero / Vector Graphic Section */}
-      <div className="flex flex-col items-center justify-center pt-8 pb-10 text-center">
+  if (showHeroLoading) {
+    return (
+      <div className="flex h-full min-h-[60vh] flex-col items-center justify-center text-center animate-pulse duration-1000 transition-opacity">
         <div className="relative mb-6 flex h-48 w-48 items-center justify-center">
           {/* Decorative background glow behind the image */}
           <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-3xl"></div>
@@ -75,6 +83,11 @@ export default function DashboardPage() {
           Manage patient records, review AI diagnostic predictions, and analyze real-time epidemiological data.
         </p>
       </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 animate-in fade-in duration-500">
       {/* Live status indicator */}
       <div className="flex items-center justify-end gap-1.5">
         {sseLive ? (

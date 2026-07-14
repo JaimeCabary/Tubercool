@@ -42,7 +42,7 @@ export default function DemographicsPage() {
             <h3 className="mb-4 text-sm font-semibold text-gray-900">Gender Distribution</h3>
             <ResponsiveContainer width="100%" height={240}>
               <PieChart>
-                <Pie data={data?.gender ?? []} dataKey="count" nameKey="gender" cx="50%" cy="50%" outerRadius={90} label={({ gender, percent }) => `${gender}: ${(percent * 100).toFixed(0)}%`} labelLine={false}>
+                <Pie data={data?.gender ?? []} dataKey="count" nameKey="gender" cx="50%" cy="50%" outerRadius={90} label={({ name, percent }: any) => `${name}: ${(percent * 100).toFixed(0)}%`} labelLine={false}>
                   {(data?.gender ?? []).map((_: any, i: number) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
                   ))}
