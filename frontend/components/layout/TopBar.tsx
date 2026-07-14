@@ -53,7 +53,7 @@ export function TopBar() {
       {/* Left side: Logo / Back Button */}
       {pathname !== "/dashboard" ? (
         <button 
-          onClick={() => router.back()}
+          onClick={() => router.push('/dashboard')}
           className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-600 transition-colors active:scale-95"
         >
           <ChevronLeft className="h-6 w-6" strokeWidth={2.5} />

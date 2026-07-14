@@ -31,8 +31,7 @@ export default function TestsPage() {
           </div>
         ) : !tests?.length ? (
           <div className="p-6">
-            <EmptyState icon={FlaskConical} title="No test results" description="Record the first test result"
-              action={{ label: "Add Test", href: "/tests/new" }} />
+            <EmptyState icon={FlaskConical} title="No test results" description="Record the first test result" />
           </div>
         ) : (
           <table className="w-full text-sm">

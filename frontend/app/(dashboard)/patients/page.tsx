@@ -106,7 +106,6 @@ export default function PatientsPage() {
                 icon={Users}
                 title="No patients found"
                 description="Register the first patient to get started"
-                action={{ label: "Add Patient", href: "/patients/new" }}
               />
             </div>
           ) : (
