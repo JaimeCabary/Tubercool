@@ -106,7 +106,7 @@ export function CloudflareScreen() {
         {/* ── TuberCool Logo + Domain ─────────────────────────────── */}
         <div className="mb-6 flex items-center gap-3">
           {/* TuberCool DNA logo — matches sidebar */}
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0f172a] shadow-lg shadow-[#0f172a]/30">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-900 shadow-lg shadow-blue-900/30">
             <Dna className="h-[22px] w-[22px] text-white" strokeWidth={2.5} />
           </div>
           <div>

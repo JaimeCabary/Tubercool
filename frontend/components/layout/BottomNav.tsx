@@ -48,10 +48,10 @@ export function BottomNav() {
         <Link 
           href="/predictions" 
           className={cn(
-            "flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full shadow-[0_8px_32px_rgb(15,23,42,0.4)] transition-transform active:scale-90",
+            "flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full shadow-[0_8px_32px_rgb(30,58,138,0.4)] transition-transform active:scale-90",
             isActive("/predictions") 
-              ? "bg-slate-800 text-white shadow-[0_8px_32px_rgb(15,23,42,0.5)]" 
-              : "bg-slate-900 text-white"
+              ? "bg-blue-800 text-white shadow-[0_8px_32px_rgb(30,58,138,0.5)]" 
+              : "bg-blue-900 text-white"
           )}
         >
           <BrainCircuit className="h-[28px] w-[28px]" strokeWidth={2.2} />
