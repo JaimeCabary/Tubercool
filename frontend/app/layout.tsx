@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
@@ -9,9 +9,28 @@ const sans = Plus_Jakarta_Sans({
   weight: ["300", "400", "500", "600", "700", "800"]
 });
 
+import type { Metadata, Viewport } from "next";
+
 export const metadata: Metadata = {
   title: "TuberCool",
   description: "TB Diagnosis Prediction & Surveillance Platform — Southeastern Nigeria",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "TuberCool",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 import { CloudflareScreen } from "@/components/shared/CloudflareScreen";

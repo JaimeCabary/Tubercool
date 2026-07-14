@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopBar } from "@/components/layout/TopBar";
@@ -10,12 +10,17 @@ import { useAuthStore } from "@/lib/store/auth";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!user) router.push("/login");
-  }, [user, router]);
+    setMounted(true);
+  }, []);
 
-  if (!user) return null;
+  useEffect(() => {
+    if (mounted && !user) router.push("/login");
+  }, [user, mounted, router]);
+
+  if (!mounted || !user) return null;
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
