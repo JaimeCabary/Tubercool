@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -34,6 +34,15 @@ const schema = z.object({
   previous_tb: z.boolean().default(false),
   tb_contact: z.boolean().default(false),
   notes: z.string().optional(),
+  custom_hospital: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.hospital_id === "other" && (!data.custom_hospital || data.custom_hospital.trim() === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Please enter the hospital name",
+      path: ["custom_hospital"],
+    });
+  }
 });
 
 type FormData = z.infer<typeof schema>;
@@ -44,14 +53,29 @@ export default function NewPatientPage() {
 
   const { data: hospitals } = useQuery({ queryKey: ["hospitals"], queryFn: hospitalsApi.list });
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  const watchHospitalId = useWatch({ control, name: "hospital_id" });
 
   async function onSubmit(data: FormData) {
     setLoading(true);
     try {
-      const patient = await patientsApi.create(data);
+      let finalHospitalId = data.hospital_id;
+
+      // Create hospital on the fly if 'other' is selected
+      if (finalHospitalId === "other" && data.custom_hospital) {
+        const newHospital = await hospitalsApi.create({ name: data.custom_hospital });
+        finalHospitalId = newHospital.id;
+      }
+
+      const { custom_hospital, ...payloadData } = data;
+      const patient = await patientsApi.create({
+        ...payloadData,
+        hospital_id: finalHospitalId,
+      });
+
       toast.success("Patient registered successfully");
       router.push(`/patients/${patient.id}`);
     } catch {
@@ -153,8 +177,15 @@ export default function NewPatientPage() {
               {(hospitals ?? []).map(h => (
                 <option key={h.id} value={h.id}>{h.name}</option>
               ))}
+              <option value="other">Other (specify)</option>
             </select>
           </Field>
+          
+          {watchHospitalId === "other" && (
+            <Field label="Specify Hospital Name *" error={errors.custom_hospital?.message}>
+              <Input placeholder="Enter hospital name" {...register("custom_hospital")} />
+            </Field>
+          )}
         </Section>
 
         <Section title="Risk Factors & Medical History">

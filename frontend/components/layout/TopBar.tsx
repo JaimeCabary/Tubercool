@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Bell, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -42,11 +43,11 @@ export function TopBar() {
           <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input placeholder="Search..." className="h-8 w-52 pl-9 text-xs bg-gray-50" />
         </div>
-        <button className="relative flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+        <Link href="/notifications" className="relative flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
           <Bell className="h-[18px] w-[18px]" />
           {/* dot */}
           <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-blue-600" />
-        </button>
+        </Link>
       </div>
     </header>
   );
