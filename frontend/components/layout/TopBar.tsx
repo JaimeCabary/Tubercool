@@ -1,9 +1,12 @@
 "use client";
+import { useState, useEffect } from "react";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Bell, Search } from "lucide-react";
+import { Bell, Search, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Sidebar } from "./Sidebar";
 
 const TITLES: Record<string, string> = {
   "/dashboard":              "Dashboard",
@@ -34,9 +37,28 @@ export function TopBar() {
   const pathname = usePathname();
   const title = TITLES[pathname] ?? "TuberCool";
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   return (
     <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-5 gap-4">
-      <h1 className="text-sm font-semibold text-gray-900 truncate">{title}</h1>
+      <div className="flex items-center gap-3">
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <button className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+              <Menu className="h-5 w-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-[270px] border-r-0" showCloseButton={false}>
+            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+            <Sidebar />
+          </SheetContent>
+        </Sheet>
+        <h1 className="text-sm font-semibold text-gray-900 truncate">{title}</h1>
+      </div>
 
       <div className="flex items-center gap-2 shrink-0">
         <div className="relative hidden md:block">

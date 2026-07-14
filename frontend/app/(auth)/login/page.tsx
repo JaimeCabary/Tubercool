@@ -81,6 +81,20 @@ export default function LoginPage() {
           {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
         </div>
 
+        <div className="flex items-center justify-between pt-1 pb-2">
+          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
+              defaultChecked
+            />
+            Remember me
+          </label>
+          <Link href="#" className="text-sm font-medium text-blue-600 hover:text-blue-700">
+            Forgot password?
+          </Link>
+        </div>
+
         <Button type="submit" className="w-full sm:w-auto px-8 h-12 text-base font-semibold rounded-xl shadow-md transition-transform active:scale-[0.98]" disabled={loading}>
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Sign in
