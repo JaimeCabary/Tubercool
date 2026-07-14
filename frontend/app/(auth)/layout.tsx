@@ -43,8 +43,31 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
       </div>
       {/* Right panel */}
-      <div className="flex flex-1 items-center justify-center bg-white p-8">
-        {children}
+      <div className="relative flex flex-1 items-center justify-center p-8 lg:bg-white">
+        
+        {/* Mobile-only Background Image */}
+        <div className="absolute inset-0 block lg:hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2000&auto=format&fit=crop" 
+            alt="Medical Background"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-slate-900/80 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent"></div>
+        </div>
+
+        {/* Mobile Logo (Top Left) */}
+        <div className="absolute left-6 top-8 z-10 flex items-center gap-2.5 lg:hidden">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 shadow-lg backdrop-blur-sm border border-white/10">
+            <Dna className="h-6 w-6 text-white" />
+          </div>
+          <span className="text-xl font-bold tracking-tight text-white">TuberCool</span>
+        </div>
+
+        {/* Form Container (Card on mobile, flat on desktop) */}
+        <div className="relative z-10 w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl ring-1 ring-black/5 lg:p-0 lg:shadow-none lg:ring-0 lg:bg-transparent">
+          {children}
+        </div>
       </div>
     </div>
   );
