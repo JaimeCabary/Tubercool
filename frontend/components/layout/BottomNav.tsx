@@ -35,7 +35,7 @@ export function BottomNav() {
                 href={href}
                 className={cn(
                   "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
-                  active ? "text-blue-600" : "text-gray-400 hover:text-gray-600 active:bg-gray-100"
+                  active ? "text-blue-950" : "text-gray-400 hover:text-gray-600 active:bg-gray-100"
                 )}
               >
                 <Icon className="h-6 w-6" strokeWidth={active ? 2.5 : 1.7} />
@@ -67,7 +67,7 @@ export function BottomNav() {
                 href={href}
                 className={cn(
                   "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
-                  active ? "text-blue-600" : "text-gray-400 hover:text-gray-600 active:bg-gray-100"
+                  active ? "text-blue-950" : "text-gray-400 hover:text-gray-600 active:bg-gray-100"
                 )}
               >
                 <Icon className="h-6 w-6" strokeWidth={active ? 2.5 : 1.7} />

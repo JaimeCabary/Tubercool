@@ -15,7 +15,7 @@ const links = [
 export function SettingsSidebar() {
   const pathname = usePathname();
   return (
-    <nav className="w-44 shrink-0 space-y-0.5">
+    <nav className="hidden md:block w-44 shrink-0 space-y-0.5">
       {links.map(({ href, icon: Icon, label }) => (
         <Link key={href} href={href}
           className={cn(

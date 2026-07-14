@@ -139,7 +139,7 @@ export function Sidebar() {
                         "flex items-center rounded-xl py-2 text-sm font-semibold transition-all",
                         isCollapsed ? "justify-center px-0" : "gap-3 px-3",
                         active
-                          ? "bg-gray-100 text-gray-900 shadow-sm ring-1 ring-gray-200/50"
+                          ? "bg-gray-100 text-blue-950 shadow-sm ring-1 ring-gray-200/50"
                           : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                       )}
                     >
