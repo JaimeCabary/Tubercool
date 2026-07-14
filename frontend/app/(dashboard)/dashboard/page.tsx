@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSSE } from "@/lib/hooks/useSSE";
+import { useAuthStore } from "@/lib/store/auth";
 
 const MONTHLY_TREND = [
   { month: "Jan", tests: 42, positive: 18 },
@@ -30,6 +31,8 @@ const API_BASE =
 
 export default function DashboardPage() {
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
+  
   const { data: overview, isLoading } = useQuery({
     queryKey: ["analytics", "overview"],
     queryFn:  analyticsApi.overview,
@@ -88,23 +91,32 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      {/* Live status indicator */}
-      <div className="flex items-center justify-end gap-1.5">
-        {sseLive ? (
-          <>
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-            <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600">
-              <Wifi className="h-3.5 w-3.5" /> Live
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="h-1.5 w-1.5 rounded-full bg-gray-300" />
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
-              <WifiOff className="h-3.5 w-3.5" /> Reconnecting…
-            </span>
-          </>
-        )}
+      {/* Header & Live status indicator */}
+      <div className="flex items-end justify-between">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+            Welcome back, {user?.full_name?.split(" ")[0] || "Clinician"}! 👋
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">Here's your clinical overview for today.</p>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          {sseLive ? (
+            <>
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+              <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600">
+                <Wifi className="h-3.5 w-3.5" /> Live
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="h-1.5 w-1.5 rounded-full bg-gray-300" />
+              <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                <WifiOff className="h-3.5 w-3.5" /> Reconnecting…
+              </span>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Stats */}
