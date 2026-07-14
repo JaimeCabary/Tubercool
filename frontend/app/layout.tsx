@@ -14,10 +14,13 @@ export const metadata: Metadata = {
   description: "TB Diagnosis Prediction & Surveillance Platform — Southeastern Nigeria",
 };
 
+import { CloudflareScreen } from "@/components/shared/CloudflareScreen";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full bg-gray-50 font-sans">
+        <CloudflareScreen />
         <Providers>{children}</Providers>
       </body>
     </html>
