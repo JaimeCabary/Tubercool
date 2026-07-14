@@ -131,7 +131,7 @@ export default function NewPatientPage() {
             <Input type="date" {...register("date_of_birth")} />
           </Field>
           <Field label="Gender">
-            <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("gender")}>
+            <select className="flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("gender")}>
               <option value="">Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -145,7 +145,7 @@ export default function NewPatientPage() {
             <Input placeholder="Farmer, Teacher, etc." {...register("occupation")} />
           </Field>
           <Field label="Education Level">
-            <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("education_level")}>
+            <select className="flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("education_level")}>
               <option value="">Select level</option>
               <option value="none">No formal education</option>
               <option value="primary">Primary</option>
@@ -161,7 +161,7 @@ export default function NewPatientPage() {
             <Input placeholder="Street address" {...register("address")} />
           </Field>
           <Field label="State">
-            <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("state")}>
+            <select className="flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("state")}>
               <option value="">Select state</option>
               {["Abia", "Anambra", "Ebonyi", "Enugu", "Imo"].map(s => (
                 <option key={s} value={s}>{s}</option>
@@ -172,7 +172,7 @@ export default function NewPatientPage() {
             <Input placeholder="Local Government Area" {...register("lga")} />
           </Field>
           <Field label="Hospital *" error={errors.hospital_id?.message}>
-            <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("hospital_id")}>
+            <select className="flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("hospital_id")}>
               <option value="">Select hospital</option>
               {(hospitals ?? []).map(h => (
                 <option key={h.id} value={h.id}>{h.name}</option>
@@ -190,7 +190,7 @@ export default function NewPatientPage() {
 
         <Section title="Risk Factors & Medical History">
           <Field label="HIV Status">
-            <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("hiv_status")}>
+            <select className="flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm" {...register("hiv_status")}>
               <option value="unknown">Unknown</option>
               <option value="negative">Negative</option>
               <option value="positive">Positive</option>
